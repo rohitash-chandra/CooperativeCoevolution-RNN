@@ -240,28 +240,26 @@ public:
 	void LoadSavedData(Sizes Layersize, char* filename);
 	double TestLearnedData(Sizes Layersize, char* learntData, char* TestFile,
 			int sampleSize, int columnSize, int outputSize);
-	double GenerateData(Sizes Layersize, char* learntData, char* TestFile,
-			int sampleSize, int columnSize, int outputSize);
+	 
 	double CountLearningData(TrainingExamples TraineeSamples, int temp,
 			Sizes Layersize);
 	double CountTestingData(TrainingExamples TraineeSamples, int temp,
 			Sizes Layersize);
-	void LoadInductiveBias();
+	 
 	double MAE(TrainingExamples TraineeSamples, int temp, Sizes Layersize);
 	void ChoromesToNeurons(Layer NeuronChrome);
 	double ForwardFitnessPass(Layer NeuronChrome, TrainingExamples Test);
 	bool CheckOutput(TrainingExamples TraineeSamples, int pattern,
 			Sizes Layersize);
-	double GenerateTreeData(char* TestingFile, int testsize, Sizes Layersize,
-			char* filename, char* load);
+	 
 	double TestTrainingData(Sizes Layersize, char* learntData, char* TestFile,
 			int sampleSize, int columnSize, int outputSize, ofstream & out2);
-	double Radial(Frame Mean, Frame Variance, Frame Frames);
+	 
 	double NormalisedMeanSquaredError(TrainingExamples TraineeSamples, int temp,
 			Sizes Layersize);
 	double BP(Layer NeuronChrome, TrainingExamples Test, int generations);
 	double Abs(double num);
-	double MultiRadial(Sizes Layersize, Frame Mean, Frame Frames);
+	 
 	double MAPE(TrainingExamples TraineeSamples, int temp, Sizes Layersize);
 
 };
@@ -308,33 +306,9 @@ double NeuralNetwork::Abs(double num) {
 		return num * -1;
 	else
 		return num;
-}
+} 
 
-double NeuralNetwork::MultiRadial(Sizes Layersize, Frame Mean, Frame Frames) {
-	double Gaussian = 0;
-
-	return Gaussian;
-}
-
-double NeuralNetwork::Radial(Frame Mean, Frame Variance, Frame Frames) {
-	double observation = Frames[0];
-	double standarddev = Variance[0];
-	double mean = Mean[0];
-	standarddev = Abs(standarddev);
-	double ActualOutput = 0;
-	double Radial;
-	double temp = 0;
-	double temp2 = 0;
-
-	temp = observation - mean;
-	temp2 = (temp * temp) / (standarddev * standarddev);
-	Radial = -0.5 * temp2;
-	double temp3 = 1;
-	ActualOutput = temp3 * exp(Radial);
-
-	return ActualOutput;
-}
-
+ 
 void NeuralNetwork::CreateNetwork(Sizes Layersize, int Maxsize) {
 	int end = Layersize.size() - 1;
 
@@ -981,43 +955,7 @@ double NeuralNetwork::TestLearnedData(Sizes Layersize, char* learntData,
 	return accuracy;
 
 }
-
-double NeuralNetwork::GenerateData(Sizes Layersize, char* learntData,
-		char* TestFile, int sampleSize, int columnSize, int outputSize) {
-	bool valid;
-	double count = 1;
-	double total;
-	double accuracy;
-
-	Samples sample;
-
-	TrainingExamples Test(TestFile, sampleSize, columnSize, outputSize);
-
-	total = Test.SampleSize; //how many samples to test?
-
-	CreateNetwork(Layersize, sampleSize);
-
-	LoadSavedData(Layersize, "Learnt.txt");
-
-	for (int phone = 0; phone < Test.SampleSize; phone++) {
-		sample = Test.Sample[phone];
-
-		int slide;
-
-		for (slide = 0; slide < sample.PhoneSize; slide++) {
-			ForwardPass(sample, slide, Layersize, phone);
-
-		}
-	}
-
-	count = CountTestingData(Test, sampleSize, Layersize);
-	accuracy = (count / total) * 100;
-	cout << "The sucessful count is " << count << " out of " << total << endl;
-	cout << "The accuracy of test is: " << accuracy << " %" << endl;
-	return accuracy;
-
-}
-
+ 
 double NeuralNetwork::TestTrainingData(Sizes Layersize, char* learntData,
 		char* TestFile, int sampleSize, int columnSize, int outputSize,
 		ofstream & out2) {
@@ -2282,7 +2220,7 @@ void CombinedEvolution::Procedure(bool bp, double h, ofstream &out1,
 	double H = 0;
 
 	TrainingExamples Samples(trainfile, trainsize, acousticVector, outputsize);
-	Samples.printData();
+	//Samples.printData();
 
 	double error;
 
@@ -2394,9 +2332,7 @@ void CombinedEvolution::Procedure(bool bp, double h, ofstream &out1,
 
 //---------------------------------------------------------------------------------------
 int main(void) {
-
-	int VSize = 90;
-
+ 
 	ofstream out1;
 	out1.open("Oneout1.txt");
 	ofstream out2;
@@ -2404,9 +2340,9 @@ int main(void) {
 	ofstream out3;
 	out3.open("Oneout3.txt");
 
-	for (int hidden = 3; hidden <= 3; hidden += 2) {
+	for (int hidden = 3; hidden <= 7; hidden += 2) {
 		double onelevelstop = 0.05;
-		double maxrun = 1;
+		double maxrun = 1; // choose number of experimental runs
 		int success = 0;
 
 		for (int run = 1; run <= maxrun; run++) {
