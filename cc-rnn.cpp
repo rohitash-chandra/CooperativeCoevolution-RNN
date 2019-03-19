@@ -59,8 +59,8 @@ typedef vector<vector<double> > Data;
 //Mackey Glass Data is used
 const int trainsize = 299; //255
 const int testsize = 99; //16000
-char * trainfile = "train_embed.txt"; // may need to update this path to your own pc
-char * testfile = "test_embed.txt"; //   may need to update this path to your own pc
+char  trainfile[100] = "train_embed.txt"; // may need to update this path to your own pc
+char   testfile[100] = "test_embed.txt"; //   may need to update this path to your own pc
 const double MAEscalingfactor = 10;
 
 int maxgen = 1000; //max Func eval (training time)
@@ -247,7 +247,7 @@ public:
 			int columnSize, int outputSize);
 	Layer Neurons_to_chromes();
 	void SaveLearnedData(Sizes Layersize, char* filename);
-	void LoadSavedData(Sizes Layersize, char* filename);
+	void LoadSavedData(Sizes Layersize, char  filename []);
 	double TestLearnedData(Sizes Layersize, char* learntData, char* TestFile,
 			int sampleSize, int columnSize, int outputSize);
 	 
@@ -864,7 +864,7 @@ void NeuralNetwork::SaveLearnedData(Sizes Layersize, char* filename) {
 	return;
 }
 
-void NeuralNetwork::LoadSavedData(Sizes Layersize, char* filename) {
+void NeuralNetwork::LoadSavedData(Sizes Layersize, char filename []) {
 	ifstream in(filename);
 	if (!in) {
 		cout << endl << "failed to load file" << endl;
@@ -944,7 +944,7 @@ double NeuralNetwork::TestLearnedData(Sizes Layersize, char* learntData,
 
 	CreateNetwork(Layersize, sampleSize);
 
-	LoadSavedData(Layersize, "Learnt.txt");
+	LoadSavedData(Layersize, (char *) "Learnt.txt");
 
 	for (int phone = 0; phone < Test.SampleSize; phone++) {
 		sample = Test.Sample[phone];
@@ -982,7 +982,7 @@ double NeuralNetwork::TestTrainingData(Sizes Layersize, char* learntData,
 
 	CreateNetwork(Layersize, sampleSize);
 
-	LoadSavedData(Layersize, "Learnt.txt");
+	LoadSavedData(Layersize, (char *)"Learnt.txt");
 
 	for (int phone = 0; phone < Test.SampleSize; phone++) {
 		sample = Test.Sample[phone];
@@ -2242,7 +2242,7 @@ void CombinedEvolution::Procedure(bool bp, double h, ofstream &out1,
 	NeuralNetwork network(layersize);
 	network.CreateNetwork(layersize, trainsize);
 
-	cout << " doing-----" << endl;
+	cout << " running-----" << endl;
 
 	if (bp) {
 		epoch = network.BackPropogation(Samples, 0.2, layersize, file,
